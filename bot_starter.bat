@@ -1,0 +1,1 @@
+start "Pavuk_bot" node index.js
