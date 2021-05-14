@@ -41,9 +41,10 @@ client.on("message", async message => {
   const nick = message.member.nickname;
   const usr = message.author;
   const gil = message.guild;
-  doj = true;
+  doj = true; //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
   if (message.content.startsWith(`Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...`))
   {
+    //Данная фича была нужна для удаления надоедливых сообщений другого бота о лвл апе. наверно, её можно удалить 8/
     doj = false;
     console.log(`Deleted Sidor LvlUP message (${usr.username})`)
     message.delete()
@@ -342,7 +343,6 @@ function skip(message, serverQueue) {
 }
 
 function stop(message, serverQueue) {
-  //console.log(serverQueue);
   if (!message.member.voice.channel){
     console.log("Но был вне голосового канала")
     return message.channel.send(
