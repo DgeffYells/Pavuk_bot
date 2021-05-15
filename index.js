@@ -126,6 +126,7 @@ client.on("message", async message => {
   }
   else if (low.startsWith(`${prefix}`)&& equalizer(low).includes("wag")){ 
     if (!message.member.voice.channel) { return;}
+    doj = false;
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=jt_9fsA_XmA");
    }
    else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
