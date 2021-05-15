@@ -113,11 +113,13 @@ client.on("message", async message => {
   
   else if (low.startsWith(`${prefix}sidor`)||low.startsWith(`${prefix} sidor`)) {
     log(`${usr.username} (${nick}) used Sidor at ${gil.name} at ${chan.name}`);
+    message.delete();
     chan.send("Короче, " + (usr.toString()) + ", я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что..." )
   } 
   
   else if (low.startsWith(`${prefix}chaos`)||low.startsWith(`${prefix} chaos`)){
     log(`${usr.username} (${nick}) призвал Хаос на ${gil.name}`)
+    message.delete();
     if (!message.member.voice.channel){
       log("Но никто не пришёл...")
       return message.reply("Где должен воцариться Хаос?");
@@ -168,6 +170,7 @@ client.on("message", async message => {
 
   else if (doj) {
     log(`${usr.username} (${nick}) ввёл некорректную команду на ${gil.name} на ${message.channel.name}`)
+    message.delete();
    message.reply(`Херню пишешь!\n\`${prefix}help\` для просмотра команд!`);
   }
 });
@@ -196,6 +199,8 @@ async function execute(message, serverQueue) {
     log("Но у меня нет прав, чтобы эсто сделать")
     return message.channel.send("А права мне дать не хочешь?(подключаться, говорить)");
   }
+
+  message.delete();
 
   const songInfo = await ytdl.getInfo(args[1]);
   const song = {
