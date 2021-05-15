@@ -96,8 +96,7 @@ client.on("message", async message => {
 
   else if (low.startsWith(`${prefix}anekdot`)||low.startsWith(`${prefix} anekdot`)) {
     log(`${usr.username} (${nick}) попросил рассказать анекдот на ${gil.name} на ${chan.name}`)
-    var q = Math.round( Math.random()*10);
-    chan.send("Внимание! Анекдот!\n"+anekdots[q]);
+    chan.send("Внимание! Анекдот!\n"+anekdots[Math.floor(Math.random() * (anekdots.length))]);
   }
    /*else if ( (message.content.includes("Unity",0)) || (message.content.includes("unity",0)) || (message.content.includes("Юнити",0)) || (message.content.includes("юнити",0))  ) {    
     message.delete();
@@ -163,7 +162,8 @@ client.on("message", async message => {
   }
 
   else if (low.startsWith(`${prefix}tst`) ){
-    log(anekdots[10]);
+    //chan.send(Math.floor(Math.random() * (3)));
+    chan.send(Math.floor(Math.random() * (anekdots.length)));
   }
 
   else if (doj) {
