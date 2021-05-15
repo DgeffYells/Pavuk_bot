@@ -117,11 +117,18 @@ client.on("message", async message => {
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=uD3BuJk0lOQ");
     
   }
-  else if (low.startsWith(`${prefix}`)&& equalizer(low).includes("wag")){ 
-    if (!message.member.voice.channel) { return;}
+  else if (equalizer(low).includes("wag")){
+    
+    chan.send("WAAAAAAAAAAAAAAAAAGHH!!!!"/*,{
+      files: ["./1.png"],
+      tts:true
+    }*/)
+    if (message.member.voice.channel){      
     doj = false;
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=jt_9fsA_XmA");
-   }
+    }
+   log(`${usr.username} (${nick}) призвал Ваагх на ${gil.name}`);
+  }
    else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
     log(`${usr.username} (${nick}) запросил ссылку на свой аватар на ${gil.name} на ${chan.name}`);
     message.reply(message.author.avatarURL());
