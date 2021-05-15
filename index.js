@@ -100,7 +100,7 @@ client.on("message", async message => {
   // оставил только в качестве образца выдачи роли по ёё имени
   else if (low.startsWith(`${prefix}commands`)||low.startsWith(`${prefix}help`)||low.startsWith(`${prefix} help`)||low.startsWith(`${prefix} commands`)){
     log(`${usr.username} (${nick})  запросил список команд на ${gil.name} на ${chan.name}`)
-    chan.send(`Префикс - \`${prefix}\`\n \`hello\` - привет!\n \`anekdot\` - Внимание! Анекдот!\n \`sidor\` - Хабар принес?\n \`play\` \`*URL или название*\`(Писать без пробела!(\`o/play music\`)) - воспроизведение музыки (а также добавление произведения в очередь)\n \`skip\`, \`stop\`, \`queue\` - думаю понятно :/\n \`chaos\` - Chaos! Chaos!\n \`avatar\` - получить ссылку на свою аватарку\n \`ask\` - познать истину (или ложь)\n \`fask\` - прекратить познавать истину (или ложь)`)
+    chan.send(`Префикс - \`${prefix}\`\n \`hello\` - привет!\n \`anekdot\` - Внимание! Анекдот!\n \`play\` \`*URL или название*\`(Писать без пробела!(\`o/play music\`)) - воспроизведение музыки (а также добавление произведения в очередь)\n \`skip\`, \`stop\`, \`queue\` - думаю понятно :/\n \`avatar\` - получить ссылку на свою аватарку\n \`ask\` - познать истину (или ложь)\n \`fask\` - прекратить познавать истину (или ложь)`)
     chan.send(`${client.emojis.cache.get("696405977792118794")}`)
 
   } else if (low.startsWith(`${prefix}sidor`)||low.startsWith(`${prefix} sidor`)) {
@@ -142,6 +142,7 @@ client.on("message", async message => {
   } else if (low.startsWith(`${prefix}`)&&low.includes("fask") ){
     question = false;
     log(`${usr.username} (${nick}) перестал задавать вопросы на ${gil.name}`);
+    chan.send("Чтож, пожалуй, хватит с вас.");
   }
   else if (doj) {
     log(`${usr.username} (${nick}) ввёл некорректную команду на ${gil.name} на ${message.channel.name}`)
