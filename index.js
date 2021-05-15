@@ -6,7 +6,9 @@ const request = require("request");
 const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
-const {anekdots} = require("./anekdot.json")
+const {anekdots} = require("./anekdot.json");
+const { fail } = require("assert");
+const { exit } = require("process");
 const client = new Discord.Client();
 const queue = new Map();
 client.once("ready", () => {
@@ -28,7 +30,13 @@ client.on("message", async message => {
 
   if (message.author.bot) return;
   if (!message.guild) return;
-
+  doj = true;
+  const low = message.content.toLowerCase();
+  const chan = message.channel;
+  const serverQueue = queue.get(message.guild.id);
+  const nick = message.member.nickname;
+  const usr = message.author;
+  const gil = message.guild;
   if (message.channel.id == "703165753528156200"){
     client.channels.fetch("511905776718053376")
     .then(channel => {channel.send(message.content);
@@ -36,14 +44,16 @@ client.on("message", async message => {
     .catch(console.error)
     return;
   }
+  
+  else if(message.channel.id=="696043283226296360"){
+    if(low.startsWith(`${prefix}exit`)) {
+      doj=false;
+      exit();
+    }
+  }
 
-  const low = message.content.toLowerCase();
-  const chan = message.channel;
-  const serverQueue = queue.get(message.guild.id);
-  const nick = message.member.nickname;
-  const usr = message.author;
-  const gil = message.guild;
-  doj = true; //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
+
+   //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
 
   if (question && low.endsWith("?") ){
     if (low.includes("ты пидор")){
@@ -165,7 +175,7 @@ client.on("message", async message => {
 
   else if (low.startsWith(`${prefix}tst`) ){
     //chan.send(Math.floor(Math.random() * (3)));
-    chan.send(Math.floor(Math.random() * (anekdots.length)));
+    chan.send(fgars);
   }
 
   else if (doj) {
