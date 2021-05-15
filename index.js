@@ -389,4 +389,11 @@ function equalizer (str){
     return s;
   }
 
+  function log (text){
+    fs.appendFile('degub.log', `${Date()} ${text} \r\n`, (err) => {
+      if (err) throw err;
+      console.log(consol);
+    });
+  }
+
 client.login(token);
