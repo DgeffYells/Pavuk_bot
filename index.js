@@ -25,6 +25,10 @@ client.once("disconnect", () => {
 question =false;
 
 client.on("message", async message => {
+
+  if (message.author.bot) return;
+  if (!message.guild) return;
+
   if (message.channel.id == "703165753528156200"){
     client.channels.fetch("511905776718053376")
     .then(channel => {channel.send(message.content);
@@ -33,8 +37,6 @@ client.on("message", async message => {
     return;
   }
 
-  if (message.author.bot) return;
-  if (!message.guild) return;
   const low = message.content.toLowerCase();
   const chan = message.channel;
   const serverQueue = queue.get(message.guild.id);
@@ -42,6 +44,7 @@ client.on("message", async message => {
   const usr = message.author;
   const gil = message.guild;
   doj = true; //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
+
   if (question && low.endsWith("?") ){
     if (low.includes("ты пидор")){
       message.reply("а может ты пидор?")
@@ -54,6 +57,7 @@ client.on("message", async message => {
     }
     return
   }
+
   if (!message.content.startsWith(prefix)) return;
 
   if (low.startsWith(`${prefix}play`)) {
@@ -70,23 +74,27 @@ client.on("message", async message => {
       executesear(message, serverQueue)
       .catch(console.error)
       return;
-
     }
-  } else if (low.startsWith(`${prefix}skip`) || low.startsWith(`${prefix} skip`)) {
+  } 
+
+  else if (low.startsWith(`${prefix}skip`) || low.startsWith(`${prefix} skip`)) {
       log(`${usr.username} (${nick}) скипнул трек на ${gil.name}`);
       skip(message, serverQueue)
       return;
-
-  } else if (low.startsWith(`${prefix}stop`)|| low.startsWith(`${prefix} stop`)) {
+  } 
+  
+  else if (low.startsWith(`${prefix}stop`)|| low.startsWith(`${prefix} stop`)) {
     log(`${usr.username} (${nick}) остановил воспроизведение музыки на ${gil.name}`)
     stop(message, serverQueue);
     return;
-
-  } else if (low.startsWith(`${prefix}hello`)||low.startsWith(`${prefix} hello`)) {
+  } 
+  
+  else if (low.startsWith(`${prefix}hello`)||low.startsWith(`${prefix} hello`)) {
     message.reply("Привет!");
     return;
- 
-  } else if (low.startsWith(`${prefix}anekdot`)||low.startsWith(`${prefix} anekdot`)) {
+  }
+
+  else if (low.startsWith(`${prefix}anekdot`)||low.startsWith(`${prefix} anekdot`)) {
     log(`${usr.username} (${nick}) попросил рассказать анекдот на ${gil.name} на ${chan.name}`)
     var q = Math.round( Math.random()*10);
     chan.send("Внимание! Анекдот!\n"+anekdots[q]);
@@ -102,12 +110,14 @@ client.on("message", async message => {
     log(`${usr.username} (${nick})  запросил список команд на ${gil.name} на ${chan.name}`)
     chan.send(`Префикс - \`${prefix}\`\n \`hello\` - привет!\n \`anekdot\` - Внимание! Анекдот!\n \`play\` \`*URL или название*\`(Писать без пробела!(\`o/play music\`)) - воспроизведение музыки (а также добавление произведения в очередь)\n \`skip\`, \`stop\`, \`queue\` - думаю понятно :/\n \`avatar\` - получить ссылку на свою аватарку\n \`ask\` - познать истину (или ложь)\n \`fask\` - прекратить познавать истину (или ложь)`)
     chan.send(`${client.emojis.cache.get("696405977792118794")}`)
-
-  } else if (low.startsWith(`${prefix}sidor`)||low.startsWith(`${prefix} sidor`)) {
+  } 
+  
+  else if (low.startsWith(`${prefix}sidor`)||low.startsWith(`${prefix} sidor`)) {
     log(`${usr.username} (${nick}) used Sidor at ${gil.name} at ${chan.name}`);
     chan.send("Короче, " + (usr.toString()) + ", я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что..." )
-
-  } else if (low.startsWith(`${prefix}chaos`)||low.startsWith(`${prefix} chaos`)){
+  } 
+  
+  else if (low.startsWith(`${prefix}chaos`)||low.startsWith(`${prefix} chaos`)){
     log(`${usr.username} (${nick}) призвал Хаос на ${gil.name}`)
     if (!message.member.voice.channel){
       log("Но никто не пришёл...")
@@ -115,8 +125,8 @@ client.on("message", async message => {
     }
     doj = false;
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=uD3BuJk0lOQ");
-    
   }
+  
   else if (equalizer(low).includes("wag")){
     
     chan.send("WAAAAAAAAAAAAAAAAAGHH!!!!"/*,{
@@ -129,21 +139,33 @@ client.on("message", async message => {
     }
    log(`${usr.username} (${nick}) призвал Ваагх на ${gil.name}`);
   }
-   else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
+   
+  else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
     log(`${usr.username} (${nick}) запросил ссылку на свой аватар на ${gil.name} на ${chan.name}`);
     message.reply(message.author.avatarURL());
-  } else if (low.startsWith(`${prefix}queue`)||low.startsWith(`${prefix} queue`)){
+  } 
+  
+  else if (low.startsWith(`${prefix}queue`)||low.startsWith(`${prefix} queue`)){
     log(`${usr.username} (${nick}) запросил очередь воспроизведения на ${gil.name}`);
     queueShow(message,serverQueue);
-  } else if (low.startsWith(`${prefix}ask`||low.startsWith(`${prefix} ask`))){
+  } 
+  
+  else if (low.startsWith(`${prefix}ask`||low.startsWith(`${prefix} ask`))){
     log(`${usr.username} (${nick}) начал задавать вопросы на ${gil.name}`);
     question = true;
     chan.send("Задавай свои вопросы, кожаный мешок с костями!")
-  } else if (low.startsWith(`${prefix}`)&&low.includes("fask") ){
+  } 
+  
+  else if (low.startsWith(`${prefix}`)&&low.includes("fask") ){
     question = false;
     log(`${usr.username} (${nick}) перестал задавать вопросы на ${gil.name}`);
     chan.send("Чтож, пожалуй, хватит с вас.");
   }
+
+  else if (low.startsWith(`${prefix}tst`) ){
+    log(anekdots[10]);
+  }
+
   else if (doj) {
     log(`${usr.username} (${nick}) ввёл некорректную команду на ${gil.name} на ${message.channel.name}`)
    message.reply(`Херню пишешь!\n\`${prefix}help\` для просмотра команд!`);
