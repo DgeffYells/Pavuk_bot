@@ -124,6 +124,10 @@ client.on("message", async message => {
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=uD3BuJk0lOQ");
     
   }
+  else if (low.startsWith(`${prefix}`)&& equalizer(low).includes("wag")){ 
+    if (!message.member.voice.channel) { return;}
+    executespec(message,serverQueue,"https://www.youtube.com/watch?v=jt_9fsA_XmA");
+   }
    else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
     console.log(`${usr.username} (${nick}) запросил ссылку на свой аватар на ${gil.name} на ${chan.name}`);
     message.reply(message.author.avatarURL());
@@ -373,5 +377,15 @@ function play(guild, song) {
     console.log(`Запустил трек на ${guild.name}`);
     serverQueue.textChannel.send(`В эфире: *${song.title}*`);}
 }
+
+function equalizer (str){
+    if (typeof(str)!="string") return "not string!"
+    
+    s =str[0];
+    for (var i =1; i<= str.length;i++){
+      if (str[i]!=str[i-1]) s=s+str[i];
+    }
+    return s;
+  }
 
 client.login(token);
