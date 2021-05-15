@@ -42,14 +42,7 @@ client.on("message", async message => {
   const usr = message.author;
   const gil = message.guild;
   doj = true; //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
-  if (message.content.startsWith(`Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...`))
-  {
-    //Данная фича была нужна для удаления надоедливых сообщений другого бота о лвл апе. наверно, её можно удалить 8/
-    doj = false;
-    log(`Deleted Sidor LvlUP message (${usr.username})`)
-    message.delete()
-    .catch(console.error);
-  } else if (question && low.endsWith("?") ){
+  if (question && low.endsWith("?") ){
     if (low.includes("ты пидор")){
       message.reply("а может ты пидор?")
     } else if (low.includes("пидор")){
