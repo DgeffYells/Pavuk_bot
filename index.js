@@ -10,16 +10,16 @@ const {anekdots} = require("./anekdot.json")
 const client = new Discord.Client();
 const queue = new Map();
 client.once("ready", () => {
-  log("Готов вкалывать!");
+  console.log("Готов вкалывать!");
   client.user.setActivity(stat, {type: typ});
 });
 
 client.once("reconnecting", () => {
-  log("Опять работать?");
+  console.log("Опять работать?");
 });
 
 client.once("disconnect", () => {
-  log("Прощайте");
+  console.log("Прощайте");
 });
 
 question =false;
@@ -28,7 +28,7 @@ client.on("message", async message => {
   if (message.channel.id == "703165753528156200"){
     client.channels.fetch("511905776718053376")
     .then(channel => {channel.send(message.content);
-      log("Отправил сообщение на канал "+channel +" " + channel.name)})
+      console.log("Отправил сообщение на канал "+channel +" " + channel.name)})
     .catch(console.error)
     return;
   }
@@ -42,7 +42,14 @@ client.on("message", async message => {
   const usr = message.author;
   const gil = message.guild;
   doj = true; //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
-  if (question && low.endsWith("?") ){
+  if (message.content.startsWith(`Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...`))
+  {
+    //Данная фича была нужна для удаления надоедливых сообщений другого бота о лвл апе. наверно, её можно удалить 8/
+    doj = false;
+    console.log(`Deleted Sidor LvlUP message (${usr.username})`)
+    message.delete()
+    .catch(console.error);
+  } else if (question && low.endsWith("?") ){
     if (low.includes("ты пидор")){
       message.reply("а может ты пидор?")
     } else if (low.includes("пидор")){
@@ -58,7 +65,7 @@ client.on("message", async message => {
 
   if (low.startsWith(`${prefix}play`)) {
     if (low.includes("https://www.youtube.com/watch?v=")){
-      log(`${usr.username} (${nick}) включил музыку на ${gil.name} через ссылку`);
+      console.log(`${usr.username} (${nick}) включил музыку на ${gil.name} через ссылку`);
       execute(message, serverQueue)
       .catch(console.error);
       return;
@@ -66,19 +73,19 @@ client.on("message", async message => {
     } else if (low == "o/play") {
         message.reply("Что играть-то?");
     } else {
-      log(`${usr.username} (${nick}) включил музыку на ${gil.name} через название`)
+      console.log(`${usr.username} (${nick}) включил музыку на ${gil.name} через название`)
       executesear(message, serverQueue)
       .catch(console.error)
       return;
 
     }
   } else if (low.startsWith(`${prefix}skip`) || low.startsWith(`${prefix} skip`)) {
-      log(`${usr.username} (${nick}) скипнул трек на ${gil.name}`);
+      console.log(`${usr.username} (${nick}) скипнул трек на ${gil.name}`);
       skip(message, serverQueue)
       return;
 
   } else if (low.startsWith(`${prefix}stop`)|| low.startsWith(`${prefix} stop`)) {
-    log(`${usr.username} (${nick}) остановил воспроизведение музыки на ${gil.name}`)
+    console.log(`${usr.username} (${nick}) остановил воспроизведение музыки на ${gil.name}`)
     stop(message, serverQueue);
     return;
 
@@ -87,7 +94,7 @@ client.on("message", async message => {
     return;
  
   } else if (low.startsWith(`${prefix}anekdot`)||low.startsWith(`${prefix} anekdot`)) {
-    log(`${usr.username} (${nick}) попросил рассказать анекдот на ${gil.name} на ${chan.name}`)
+    console.log(`${usr.username} (${nick}) попросил рассказать анекдот на ${gil.name} на ${chan.name}`)
     var q = Math.round( Math.random()*10);
     chan.send("Внимание! Анекдот!\n"+anekdots[q]);
   }
@@ -99,18 +106,18 @@ client.on("message", async message => {
   } */
   // оставил только в качестве образца выдачи роли по ёё имени
   else if (low.startsWith(`${prefix}commands`)||low.startsWith(`${prefix}help`)||low.startsWith(`${prefix} help`)||low.startsWith(`${prefix} commands`)){
-    log(`${usr.username} (${nick})  запросил список команд на ${gil.name} на ${chan.name}`)
-    chan.send(`Префикс - \`${prefix}\`\n \`hello\` - привет!\n \`anekdot\` - Внимание! Анекдот!\n \`play\` \`*URL или название*\`(Писать без пробела!(\`o/play music\`)) - воспроизведение музыки (а также добавление произведения в очередь)\n \`skip\`, \`stop\`, \`queue\` - думаю понятно :/\n \`avatar\` - получить ссылку на свою аватарку\n \`ask\` - познать истину (или ложь)\n \`fask\` - прекратить познавать истину (или ложь)`)
+    console.log(`${usr.username} (${nick})  запросил список команд на ${gil.name} на ${chan.name}`)
+    chan.send(`Префикс - \`${prefix}\`\n \`hello\` - привет!\n \`anekdot\` - Внимание! Анекдот!\n \`sidor\` - Хабар принес?\n \`play\` \`*URL или название*\`(Писать без пробела!(\`o/play music\`)) - воспроизведение музыки (а также добавление произведения в очередь)\n \`skip\`, \`stop\`, \`queue\` - думаю понятно :/\n \`chaos\` - Chaos! Chaos!\n \`avatar\` - получить ссылку на свою аватарку\n \`ask\` - познать истину (или ложь)\n \`fask\` - прекратить познавать истину (или ложь)`)
     chan.send(`${client.emojis.cache.get("696405977792118794")}`)
 
   } else if (low.startsWith(`${prefix}sidor`)||low.startsWith(`${prefix} sidor`)) {
-    log(`${usr.username} (${nick}) used Sidor at ${gil.name} at ${chan.name}`);
+    console.log(`${usr.username} (${nick}) used Sidor at ${gil.name} at ${chan.name}`);
     chan.send("Короче, " + (usr.toString()) + ", я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что..." )
 
   } else if (low.startsWith(`${prefix}chaos`)||low.startsWith(`${prefix} chaos`)){
-    log(`${usr.username} (${nick}) призвал Хаос на ${gil.name}`)
+    console.log(`${usr.username} (${nick}) призвал Хаос на ${gil.name}`)
     if (!message.member.voice.channel){
-      log("Но никто не пришёл...")
+      console.log("Но никто не пришёл...")
       return message.reply("Где должен воцариться Хаос?");
     }
     doj = false;
@@ -121,31 +128,30 @@ client.on("message", async message => {
     if (!message.member.voice.channel) { return;}
     doj = false;
     executespec(message,serverQueue,"https://www.youtube.com/watch?v=jt_9fsA_XmA");
-    log(`${usr.username} (${nick}) призвал Ваагх на ${gil.name}`);
    }
    else if (low.startsWith(`${prefix}avatar`)||low.startsWith(`${prefix} avatar`)){
-    log(`${usr.username} (${nick}) запросил ссылку на свой аватар на ${gil.name} на ${chan.name}`);
+    console.log(`${usr.username} (${nick}) запросил ссылку на свой аватар на ${gil.name} на ${chan.name}`);
     message.reply(message.author.avatarURL());
   } else if (low.startsWith(`${prefix}queue`)||low.startsWith(`${prefix} queue`)){
-    log(`${usr.username} (${nick}) запросил очередь воспроизведения на ${gil.name}`);
+    console.log(`${usr.username} (${nick}) запросил очередь воспроизведения на ${gil.name}`);
     queueShow(message,serverQueue);
   } else if (low.startsWith(`${prefix}ask`||low.startsWith(`${prefix} ask`))){
-    log(`${usr.username} (${nick}) начал задавать вопросы на ${gil.name}`);
+    console.log(`${usr.username} (${nick}) начал задавать вопросы на ${gil.name}`);
     question = true;
     chan.send("Задавай свои вопросы, кожаный мешок с костями!")
   } else if (low.startsWith(`${prefix}`)&&low.includes("fask") ){
     question = false;
-    log(`${usr.username} (${nick}) перестал задавать вопросы на ${gil.name}`);
+    console.log(`${usr.username} (${nick}) перестал задавать вопросы на ${gil.name}`);
   }
   else if (doj) {
-    log(`${usr.username} (${nick}) ввёл некорректную команду на ${gil.name} на ${message.channel.name}`)
+    console.log(`${usr.username} (${nick}) ввёл некорректную команду на ${gil.name} на ${message.channel.name}`)
    message.reply(`Херню пишешь!\n\`${prefix}help\` для просмотра команд!`);
   }
 });
 
 function queueShow(message,serverQueue){
   if (!serverQueue){
-    log("Но очередь была пустой");
+    console.log("Но очередь была пустой");
      return message.reply("\nThe Sound of Silence")
   }
   var s="";
@@ -160,11 +166,11 @@ async function execute(message, serverQueue) {
 
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel){
-    log("Но был вне голосового канала")
+    console.log("Но был вне голосового канала")
     return message.channel.send("В голосовой зайди, пенчекряк!");}
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-    log("Но у меня нет прав, чтобы эсто сделать")
+    console.log("Но у меня нет прав, чтобы эсто сделать")
     return message.channel.send("А права мне дать не хочешь?(подключаться, говорить)");
   }
 
@@ -194,13 +200,13 @@ async function execute(message, serverQueue) {
       queueContruct.connection = connection;
       play(message.guild, queueContruct.songs[0]);
     } catch (err) {
-      log(err);
+      console.log(err);
       queue.delete(message.guild.id);
       return message.channel.send(err);
     }
   } else {
     serverQueue.songs.push(song);
-    log("Но она была занесена в очередь")
+    console.log("Но она была занесена в очередь")
     return message.channel.send(`${song.title} занесена в красную книгу`);
   }
 }
@@ -237,7 +243,7 @@ async function executespec(message, serverQueue,ur) {
       queueContruct.connection = connection;
       play(message.guild, queueContruct.songs[0]);
     } catch (err) {
-      log(err);
+      console.log(err);
       queue.delete(message.guild.id);
       return message.channel.send(err);
     }
@@ -249,11 +255,11 @@ async function executespec(message, serverQueue,ur) {
 async function executesear(message, serverQueue) {
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel){
-    log("Но был вне голосового канала")
+    console.log("Но был вне голосового канала")
     return message.channel.send("В голосовой зайди, пенчекряк!");}
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-    log("Но у меня нет прав, чтобы эсто сделать")
+    console.log("Но у меня нет прав, чтобы эсто сделать")
     return message.channel.send(
       "А права мне дать не хочешь?(подключаться, говорить)"
     );
@@ -293,13 +299,13 @@ async function executesear(message, serverQueue) {
           queueContruct.connection = connection;
           play(message.guild, queueContruct.songs[0]);
         } catch (err) {
-          log(err);
+          console.log(err);
           queue.delete(message.guild.id);
           return message.channel.send(err);
         }
       } else {
         serverQueue.songs.push(song);
-        log("Но она была занесена в очередь")
+        console.log("Но она была занесена в очередь")
         return message.channel.send(`${song.title} занесена в красную книгу`);
       }
     
@@ -332,7 +338,7 @@ function search_video(query, callback) {
 
 function skip(message, serverQueue) {
   if (!message.member.voice.channel){
-    log("Но был вне голосового канала");
+    console.log("Но был вне голосового канала");
     return message.channel.send(
       "Что бы скипнуть, для начала зайди в голосовой!"
     );}
@@ -343,7 +349,7 @@ function skip(message, serverQueue) {
 
 function stop(message, serverQueue) {
   if (!message.member.voice.channel){
-    log("Но был вне голосового канала")
+    console.log("Но был вне голосового канала")
     return message.channel.send(
       "Что бы стопануть, для начала зайди в голосовой!"
     );}
@@ -369,7 +375,7 @@ function play(guild, song) {
     .on("error", error => console.error(error));
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
   if (doj){
-    log(`Запустил трек на ${guild.name}`);
+    console.log(`Запустил трек на ${guild.name}`);
     serverQueue.textChannel.send(`В эфире: *${song.title}*`);}
 }
 
@@ -386,7 +392,7 @@ function equalizer (str){
   function log (text){
     fs.appendFile('debug.log', `${Date()} ${text} \r\n`, (err) => {
       if (err) throw err;
-      consoole.log(text);
+      console.log(consol);
     });
   }
 
