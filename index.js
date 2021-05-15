@@ -390,7 +390,7 @@ function equalizer (str){
   }
 
   function log (text){
-    fs.appendFile('degub.log', `${Date()} ${text} \r\n`, (err) => {
+    fs.appendFile('debug.log', `${Date()} ${text} \r\n`, (err) => {
       if (err) throw err;
       console.log(text);
     });
