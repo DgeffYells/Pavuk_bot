@@ -30,7 +30,7 @@ client.on("message", async message => {
 
   if (message.author.bot) return;
   if (!message.guild) return;
-  doj = true;
+  doj = true; //нужно для предотвращения озвучивания спец. проигрываний (хаос и иже)
   const low = message.content.toLowerCase();
   const chan = message.channel;
   const serverQueue = queue.get(message.guild.id);
@@ -48,12 +48,10 @@ client.on("message", async message => {
   else if(message.channel.id=="696043283226296360"){
     if(low.startsWith(`${prefix}exit`)) {
       doj=false;
+      log("Выключен через консоль");
       exit();
     }
   }
-
-
-   //всё ещё нужно, для предотвращения озвучивания спец. проигрываний (хаос и иже)
 
   if (question && low.endsWith("?") ){
     if (low.includes("ты пидор")){
@@ -71,7 +69,7 @@ client.on("message", async message => {
   if (!message.content.startsWith(prefix)) return;
 
   if (low.startsWith(`${prefix}play`)) {
-    if (low.includes("https://www.youtube.com/watch?v=")){
+    if (low.includes("https://")&&low.includes("youtu")){
       log(`${usr.username} (${nick}) включил музыку на ${gil.name} через ссылку`);
       execute(message, serverQueue)
       .catch(console.error);
@@ -174,8 +172,7 @@ client.on("message", async message => {
   }
 
   else if (low.startsWith(`${prefix}tst`) ){
-    //chan.send(Math.floor(Math.random() * (3)));
-    chan.send(fgars);
+    log(serverQueue);
   }
 
   else if (doj) {
